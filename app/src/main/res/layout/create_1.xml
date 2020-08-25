@@ -41,8 +41,5 @@
             android:text="저장"
             android:background="#e1f1cb"
             />
-
     </LinearLayout>
-
-
 </LinearLayout>
