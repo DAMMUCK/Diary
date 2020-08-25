@@ -1,6 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/setting">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="비밀번호 사용"
+            android:id="@+id/text_secret"
+            android:textSize="18dp"
+            android:layout_weight="1"
+            android:gravity="center"/>
+        <Switch
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/switch1"
+            android:layout_weight="1"
+            android:gravity="center"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="비밀번호 설정"
+            android:id="@+id/textView"
+            android:textSize="18dp"
+            android:gravity="center"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/secret_editText"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:visibility="invisible"/>
+    </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="저장"
+        android:id="@+id/secret_save_btn"/>
+
+</LinearLayout>
