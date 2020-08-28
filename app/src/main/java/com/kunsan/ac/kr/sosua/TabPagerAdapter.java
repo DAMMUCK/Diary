@@ -19,13 +19,13 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
         //Returning the current tabs
         switch(position){
             case 0:
-                MainActivity.Diary_Write create = new MainActivity.Diary_Write();
+                Diary_Write create = new Diary_Write();
                 return create;
             case 1:
-                MainActivity.Diary_List view = new MainActivity.Diary_List();
+                Diary_List view = new Diary_List();
                 return view;
             case 2:
-                MainActivity.Diary_Setting setting = new MainActivity.Diary_Setting();
+                Diary_Setting setting = new Diary_Setting();
                 return setting;
             default:
                 return null;

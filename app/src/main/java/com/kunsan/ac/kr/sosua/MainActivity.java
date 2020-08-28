@@ -46,23 +46,6 @@ public class MainActivity extends AppCompatActivity {
     public static DiaryPassDBHelper pwDBHelper;
     public static SQLiteDatabase db;
 
-    //create
-    private static EditText edit_title;
-    private static EditText edit_contents;
-    private static Button save_btn;
-
-    //view
-    private static Button viewListBtn;
-    private static DiaryListAdapter listAdapter;
-
-    //setting
-    private static Switch pwSwitch;
-    private static EditText pwEditText;
-    public static Button pwSaveBtn;
-
-    private static EditText checkPass;
-    private static int flag = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //일기 쓰기 페이지 메소드
-    public static class Diary_Write extends Fragment {
+   /* //일기 쓰기 페이지 메소드
+    public class Diary_Write extends Fragment {
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -128,28 +111,28 @@ public class MainActivity extends AppCompatActivity {
             });
             return view;
         }
-    }
 
-    //DB에 일기 저장 메소드
-    public static void InsertDB(){
-        db = DBHelper.getWritableDatabase();
-        //데이터 형식 (제목,날짜,내용)
-        String sql = "insert into diary ('title', 'date', 'contents' ) values(?,?,?)";
-        SQLiteStatement st = db.compileStatement(sql);
-        st.bindString(1, edit_title.getText().toString());
-        Calendar calendar = Calendar.getInstance();
-        Date date =calendar.getTime();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy년 MM월 dd일 HH시 mm분 ss초");
-        String writeTime = simpleDateFormat.format(date);
-        st.bindString(2, writeTime);
-        st.bindString(3,edit_contents.getText().toString());
-        st.execute();
-        db.close();
-        edit_title.setText("");
-        edit_contents.setText("");
-    }
+        //DB에 일기 저장 메소드
+        public void InsertDB(){
+            db = DBHelper.getWritableDatabase();
+            //데이터 형식 (제목,날짜,내용)
+            String sql = "insert into diary ('title', 'date', 'contents' ) values(?,?,?)";
+            SQLiteStatement st = db.compileStatement(sql);
+            st.bindString(1, edit_title.getText().toString());
+            Calendar calendar = Calendar.getInstance();
+            Date date =calendar.getTime();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy년 MM월 dd일 HH시 mm분 ss초");
+            String writeTime = simpleDateFormat.format(date);
+            st.bindString(2, writeTime);
+            st.bindString(3,edit_contents.getText().toString());
+            st.execute();
+            db.close();
+            edit_title.setText("");
+            edit_contents.setText("");
+        }
+    }*/
 
-    //Diary_List inner class
+  /*  //Diary_List inner class
     public class Diary_List extends Fragment{
 
         private ListView list_diary = (ListView) findViewById(R.id.list_diary);
@@ -328,10 +311,10 @@ public class MainActivity extends AppCompatActivity {
             db.close();
         }
 
-    }
-
+    }*/
+/*
     //환경설정 inner class
-    public static class Diary_Setting extends Fragment {
+    public class Diary_Setting extends Fragment {
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -367,6 +350,6 @@ public class MainActivity extends AppCompatActivity {
             db.close();
             pwEditText.setText("");
         }
-    }
+    }*/
 
 }
