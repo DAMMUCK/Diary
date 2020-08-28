@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
         pwDBHelper = new DiaryPassDBHelper(this);
         data = new ArrayList<>();
 
+        list_diary = (ListView) findViewById(R.id.list_diary);
+
         //Initializing the TabLayout
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("CREATE"));
@@ -179,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 //비번 같을때 리스트 목록 보이기
                                 if(checkPass.getText().toString().equals(cp)){
-                                    list_diary = (ListView) view.findViewById(R.id.list_diary);
+                                   // list_diary = (ListView) view.findViewById(R.id.list_diary);
                                     data = showDB();
                                     listAdapter = new DiaryListAdapter(getContext(), R.layout.list_layout, data);
                                     list_diary.setAdapter(listAdapter);
@@ -224,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
                                     });
                                 } else{ //비밀번호 틀렸을때
                                     Toast.makeText(getContext(),"비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
-                                    list_diary = (ListView) view.findViewById(R.id.list_diary);
+                                   // list_diary = (ListView) view.findViewById(R.id.list_diary);
                                     data = showDB();
                                     //listAdapter = null;
                                     list_diary.setAdapter(null);
