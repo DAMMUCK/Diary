@@ -15,10 +15,14 @@ import androidx.fragment.app.Fragment;
 
 import static com.kunsan.ac.kr.sosua.MainActivity.db;
 import static com.kunsan.ac.kr.sosua.MainActivity.pwDBHelper;
-import static com.kunsan.ac.kr.sosua.MainActivity.pwSaveBtn;
 
 
 public class Diary_Setting extends Fragment {
+
+    private Switch pwSwitch;
+    private EditText pwEditText;
+    private Button pwSaveBtn;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
