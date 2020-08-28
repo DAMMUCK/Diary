@@ -39,9 +39,9 @@ public class Diary_List extends Fragment{
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.view_1,container, false);
+        View view = inflater.inflate(R.layout.view_1,container, false);
         flag = 1;
-
+        pwSwitch = (Switch) view.findViewById(R.id.switch1);
         //목록보기 버튼
         viewListBtn = (Button) view.findViewById(R.id.view_list);
         viewListBtn.setOnClickListener(new View.OnClickListener() {
