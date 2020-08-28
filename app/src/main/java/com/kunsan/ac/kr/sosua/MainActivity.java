@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                        });
                        alertDialog.show();
                    }else{
-                       list_diary = (ListView) view.findViewById(R.id.list_diary);
+                      // list_diary = (ListView) view.findViewById(R.id.list_diary);
                        data = showDB();
                        listAdapter = new DiaryListAdapter(getContext(), R.layout.list_layout, data);
                        list_diary.setAdapter(listAdapter);
