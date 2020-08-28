@@ -46,6 +46,23 @@ public class MainActivity extends AppCompatActivity {
     public static DiaryPassDBHelper pwDBHelper;
     public static SQLiteDatabase db;
 
+    //write
+    private static EditText edit_title;
+    private static EditText edit_contents;
+    private static Button save_btn;
+
+    //view
+    private static int flag = 0;
+    private static Button viewListBtn;
+    private static Switch pwSwitch;
+    private static EditText checkPass;
+    private static DiaryListAdapter listAdapter;
+    private static ListView list_diary;
+
+    //setting
+    private static EditText pwEditText;
+    private static Button pwSaveBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-   /* //일기 쓰기 페이지 메소드
-    public class Diary_Write extends Fragment {
+    //일기 쓰기 페이지 메소드
+    public static class Diary_Write extends Fragment {
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -130,14 +147,11 @@ public class MainActivity extends AppCompatActivity {
             edit_title.setText("");
             edit_contents.setText("");
         }
-    }*/
+    }
 
-  /*  //Diary_List inner class
-    public class Diary_List extends Fragment{
-
-        private ListView list_diary = (ListView) findViewById(R.id.list_diary);
-
-        @Nullable
+   //Diary_List inner class
+    public static class Diary_List extends Fragment{
+                @Nullable
         @Override
         public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
            final View view = inflater.inflate(R.layout.view_1,container, false);
@@ -311,10 +325,10 @@ public class MainActivity extends AppCompatActivity {
             db.close();
         }
 
-    }*/
-/*
+    }
+
     //환경설정 inner class
-    public class Diary_Setting extends Fragment {
+    public static class Diary_Setting extends Fragment {
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -350,6 +364,6 @@ public class MainActivity extends AppCompatActivity {
             db.close();
             pwEditText.setText("");
         }
-    }*/
+    }
 
 }

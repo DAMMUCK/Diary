@@ -18,13 +18,15 @@
             android:id="@+id/text_secret"
             android:textSize="18dp"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center"
+            />
         <Switch
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:id="@+id/switch1"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:checked="false"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
