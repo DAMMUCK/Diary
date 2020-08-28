@@ -33,12 +33,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+    //DB
     private static ArrayList<Diary> data;
     public static DiaryDBHelper DBHelper;
     public static DiaryPassDBHelper pwDBHelper;
@@ -50,8 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private static Button save_btn;
 
     //view
-    private static Button refresh_btn;
-    private static ListView list_diary;
+    private static Button viewListBtn;
     private static DiaryListAdapter listAdapter;
 
     //setting
@@ -75,8 +76,6 @@ public class MainActivity extends AppCompatActivity {
         //DBHelper 객체 생성
         DBHelper = new DiaryDBHelper(this);
         pwDBHelper = new DiaryPassDBHelper(this);
-
-        //diary형 리스트
         data = new ArrayList<>();
 
         //Initializing the TabLayout
@@ -87,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
         //커스텀 뷰페이지 리소스 연결
         viewPager = (ViewPager) findViewById(R.id.pager);
-
 
         //Creating TabPagerAdapter adapter
         TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
@@ -152,20 +150,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Diary_List inner class
-    public static class Diary_List extends Fragment{
+    public class Diary_List extends Fragment{
+
+        private ListView list_diary = (ListView) findViewById(R.id.list_diary);
+
         @Nullable
         @Override
         public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
-           View view = inflater.inflate(R.layout.view_1,container, false);
+           final View view = inflater.inflate(R.layout.view_1,container, false);
            flag = 1;
-           refresh_btn = (Button) view.findViewById(R.id.refresh_btn_list);
 
-           refresh_btn.setOnClickListener(new View.OnClickListener() {
+           //목록보기 버튼
+           viewListBtn = (Button) view.findViewById(R.id.view_list);
+           viewListBtn.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(final View view) {
+                   //비밀번호 설정 되어있을 때
                    if(pwSwitch.isChecked()){
                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
                        alertDialog.setMessage("비밀번호를 입력하세요");
+                       //비밀번호 입력하는 알림창 띄우기
                        View dialogView = inflater.inflate(R.layout.password, container, false);
                        alertDialog.setView(dialogView);
                        checkPass = (EditText)dialogView.findViewById(R.id.check_pass);
@@ -173,16 +177,17 @@ public class MainActivity extends AppCompatActivity {
                        alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                            @Override
                            public void onClick(DialogInterface dialog, int position) {
+                               //설정한 비번
                                 String cp = checkPass();
 
                                 //비번 같을때 리스트 목록 보이기
                                 if(checkPass.getText().toString().equals(cp)){
                                     list_diary = (ListView) view.findViewById(R.id.list_diary);
                                     data = showDB();
-
-                                    //리스트 선택 시 내용 보이기
-                                    listAdapter = new DiaryListAdapter(getContext(), R.layout.list_layout,data);
+                                    listAdapter = new DiaryListAdapter(getContext(), R.layout.list_layout, data);
                                     list_diary.setAdapter(listAdapter);
+
+                                    //리스트 아이템 클릭 이벤트
                                     list_diary.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -224,8 +229,8 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.makeText(getContext(),"비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show();
                                     list_diary = (ListView) view.findViewById(R.id.list_diary);
                                     data = showDB();
-                                    listAdapter = null;
-                                    list_diary.setAdapter(listAdapter);
+                                    //listAdapter = null;
+                                    list_diary.setAdapter(null);
                                 }
                            }
                        });
@@ -279,6 +284,50 @@ public class MainActivity extends AppCompatActivity {
            if(flag == 1){ return view;}
            else{ return null; }
         }
+
+
+        //비밀번호 확인 메소드
+        public String checkPass(){
+            db = pwDBHelper.getReadableDatabase();
+            String sql = "select * from password";
+            Cursor cursor = db.rawQuery(sql, null);
+            String pass = "";
+            while(cursor.moveToNext()){
+                pass = cursor.getString(0);
+            }
+            cursor.close();
+            db.close();
+            return pass;
+        }
+
+
+        //일기 목록 보기 메소드
+        public ArrayList<Diary> showDB(){
+            data.clear();
+            db = DBHelper.getReadableDatabase();
+            String sql = "select * from diary";
+            Cursor cursor = db.rawQuery(sql, null);
+            while(cursor.moveToNext()){
+                Diary diary = new Diary();
+                diary.setCode(cursor.getInt(0));
+                diary.setTitle(cursor.getString(1));
+                diary.setDate(cursor.getString(2));
+                diary.setContents(cursor.getString(3));
+                data.add(diary);
+            }
+            cursor.close();
+            db.close();
+            return data;
+        }
+
+        //일기 삭제 메소드
+        public void deleteDB(int code){
+            db = DBHelper.getReadableDatabase();
+            String sql = "delete from diary where code = " + code;
+            db.execSQL(sql);
+            db.close();
+        }
+
     }
 
     //환경설정 inner class
@@ -293,9 +342,9 @@ public class MainActivity extends AppCompatActivity {
             pwSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                    if (isChecked) {
+                    if (isChecked) {//on
                         pwEditText.setVisibility(View.VISIBLE);
-                    } else {
+                    } else {//off
                         pwEditText.setVisibility(View.INVISIBLE);
                     }
                 }
@@ -309,55 +358,15 @@ public class MainActivity extends AppCompatActivity {
             });
             return view;
         }
-    }
 
-    //일기 목록 보기 메소드
-    public static ArrayList<Diary> showDB(){
-        data.clear();
-        db = DBHelper.getReadableDatabase();
-        String sql = "select * from diary";
-        Cursor cursor = db.rawQuery(sql, null);
-        while(cursor.moveToNext()){
-            Diary diary = new Diary();
-            diary.setCode(cursor.getInt(0));
-            diary.setTitle(cursor.getString(1));
-            diary.setDate(cursor.getString(2));
-            diary.setContents(cursor.getString(3));
-            data.add(diary);
+        //비밀번호 입력 메소드
+        public void passDB(String str){
+            db = pwDBHelper.getWritableDatabase();
+            String sql = "insert into password values('" + str+"')";
+            db.execSQL(sql);
+            db.close();
+            pwEditText.setText("");
         }
-        cursor.close();
-        db.close();
-        return data;
     }
 
-    //일기 삭제 메소드
-    public static void deleteDB(int code){
-        db = DBHelper.getReadableDatabase();
-        String sql = "delete from diary where code = " + code;
-        db.execSQL(sql);
-        db.close();
-    }
-
-    //비밀번호 입력 메소드
-    public static void passDB(String str){
-        db = pwDBHelper.getWritableDatabase();
-        String sql = "insert into password values('" + str+"')";
-        db.execSQL(sql);
-        db.close();
-        pwEditText.setText("");
-    }
-
-    //비밀번호 확인 메소드
-    public static String checkPass(){
-        db = pwDBHelper.getReadableDatabase();
-        String sql = "select * from password";
-        Cursor cursor = db.rawQuery(sql, null);
-        String pass = "";
-        while(cursor.moveToNext()){
-            pass = cursor.getString(0);
-        }
-        cursor.close();
-        db.close();
-        return pass;
-    }
 }

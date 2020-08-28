@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="목록보기"
         android:background="#ffccff"
-        android:id="@+id/refresh_btn_list"/>
+        android:id="@+id/view_list"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
