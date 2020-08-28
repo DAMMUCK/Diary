@@ -29,7 +29,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="제목"
-            android:id-="@+id/textTitle"
+            android:id="@+id/textTitle"
             android:gravity="center"
             android:layout_weight="1"/>
         <TextView

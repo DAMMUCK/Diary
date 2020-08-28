@@ -19,11 +19,14 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.tabs.TabLayout;
 
 import java.text.SimpleDateFormat;
@@ -85,7 +88,13 @@ public class MainActivity extends AppCompatActivity {
         //커스텀 뷰페이지 리소스 연결
         viewPager = (ViewPager) findViewById(R.id.pager);
 
+
         //Creating TabPagerAdapter adapter
+        TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        //Set tabSelectedListener
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -238,23 +247,68 @@ public class MainActivity extends AppCompatActivity {
                            }
                        });
 
-                       
+                       //리스트 아이템 롱 클릭시 삭제 알림창 뜸
+                       list_diary.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                           @Override
+                           public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                               final AlertDialog.Builder dropAlertDialog = new AlertDialog.Builder(getContext());
+                               dropAlertDialog.setMessage(data.get(position).getTitle()+"을(를) 삭제하시겠습니까?");
+                               dropAlertDialog.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                                   @Override
+                                   public void onClick(DialogInterface dialog, int position) {
+                                       int code = data.get(position).getCode();
+                                       deleteDB(code);
+                                       showDB();
+                                       listAdapter.notifyDataSetChanged();
+                                   }
+                               });
+                               dropAlertDialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                   @Override
+                                   public void onClick(DialogInterface dialog, int position) {
+                                       dialog.cancel();
+                                   }
+                               });
+                               dropAlertDialog.show();
+                               return false;
+                           }
+                       });
 
                    }
-
-
-
-
-
-
                }
            });
+           if(flag == 1){ return view;}
+           else{ return null; }
         }
     }
 
     //환경설정 inner class
-    public static class Diary_Setting extends Fragment{
-
+    public static class Diary_Setting extends Fragment {
+        @Nullable
+        @Override
+        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.setting_1, container, false);
+            pwSwitch = (Switch) view.findViewById(R.id.switch1);
+            pwEditText = (EditText) view.findViewById(R.id.secret_editText);
+            pwSaveBtn = (Button) view.findViewById(R.id.secret_save_btn);
+            pwSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                    if (isChecked) {
+                        pwEditText.setVisibility(View.VISIBLE);
+                    } else {
+                        pwEditText.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
+            pwSaveBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String str = pwEditText.getText().toString();
+                    passDB(str);
+                }
+            });
+            return view;
+        }
     }
 
     //일기 목록 보기 메소드
